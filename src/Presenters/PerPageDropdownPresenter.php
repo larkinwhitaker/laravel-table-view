@@ -24,7 +24,11 @@ class PerPageDropdownPresenter
      */
 	public static function optionTag($currentRouteName, $optionTagLimit)
 	{
-		$tagValue = route( $currentRouteName, array_merge(['limit' => $optionTagLimit], Request::except('page', 'limit')) );
+		$routeParameters = Request::only('sortedBy', 'asc', 'q');
+		$routeParameters['page'] = 1;
+		$routeParameters['limit'] = $optionTagLimit;
+
+		$tagValue = route( $currentRouteName, $routeParameters );
 
 		$htmlTag = '<option value="' . $tagValue . '" ';
 

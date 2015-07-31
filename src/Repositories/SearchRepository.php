@@ -49,6 +49,14 @@ class SearchRepository
 	}
 
 	/**
+     * @return string
+     */
+	public function queryString()
+	{
+		return $this->searchQuery;
+	}
+
+	/**
      * Filter data collection for search query if there is one
      *
      * @param \Illuminate\Database\Eloquent\Collection $dataCollection

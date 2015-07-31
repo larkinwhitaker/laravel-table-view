@@ -10,6 +10,7 @@ use Witty\LaravelTableView\LaravelTableViewColumn;
 use Witty\LaravelTableView\Presenters\LaravelTableViewPresenter;
 
 use Request;
+use Cookie;
 
 class LaravelTableView 
 {
@@ -232,7 +233,8 @@ class LaravelTableView
      */
 	public function build()
 	{
-		$this->dataCollection = $this->filteredAndSorted( 
+		$this->dataCollection = $this->filteredAndSorted(
+			$this->routeName,
 			$this->dataCollection, 
 			$this->searchRepo, 
 			$this->sortRepo, 
@@ -257,15 +259,24 @@ class LaravelTableView
 	/**
      * Filter collection by search query and order collection
      *
+     * @param string $routeName
      * @param Illuminate\Database\Eloquent\Collection $dataCollection
      * @param Witty\LaravelTableView\Repositories\SearchRepository $searchRepo
      * @return Witty\LaravelTableView\Repositories\SortRepository $sortRepo
      * @return array $tableViewColumns
      * @return Illuminate\Database\Eloquent\Collection
      */
-	private function filteredAndSorted( $dataCollection, $searchRepo, $sortRepo, $tableViewColumns )
+	private function filteredAndSorted( $routeName, $dataCollection, $searchRepo, $sortRepo, $tableViewColumns )
 	{
 		$dataCollection = $searchRepo->addSearch($dataCollection);
+
+		if ( Cookie::has($routeName . '_sortedBy') )
+		{
+			$sortRepo->setDefaultFromCookie( 
+				Cookie::get($routeName . '_sortedBy'),
+				Cookie::get($routeName . '_sortAscending') 
+			);
+		}
 
 		$dataCollection = $sortRepo->addOrder($dataCollection, $tableViewColumns);
 

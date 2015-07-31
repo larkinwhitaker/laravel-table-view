@@ -5,6 +5,7 @@
 		<input type="hidden" name="sortedBy" value="{{ $tableView->sortedBy() }}">
 		<input type="hidden" name="asc" value="{{ $tableView->sortAscending() }}">
 		<input type="hidden" name="limit" value="{{ Request::input('limit', 10) }}">
+		<input type="hidden" name="page" value="0">
 
 		<button type="submit" id="submit-search-btn" class="btn btn-success pull-right m-l-5">
 			<i class="fa fa-search"></i>

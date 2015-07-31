@@ -7,6 +7,8 @@
 		if ( showButton ) $('#cancel-search-btn').show();
 		else $('#cancel-search-btn').hide();
 
+		if ( searchQuery && ! showButton ) showButton = true;
+		
 		$('#submit-search-btn').prop('disabled', ! showButton);
 	}
 

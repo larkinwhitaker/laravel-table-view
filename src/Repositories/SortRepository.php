@@ -3,6 +3,7 @@
 namespace Witty\LaravelTableView\Repositories;
 
 use Request;
+// use Illuminate\Cookie\Cookie;
 
 class SortRepository 
 {
@@ -27,10 +28,20 @@ class SortRepository
      */
 	public function setDefault($column)
 	{
-		$this->defaultSort = [
-			'property' => $column->propertyName(),
-			'isAscending' => $column->defaultSortingDirectionIsAscending()
-		];
+		$this->newDefaults(
+			$column->propertyName(), 
+			$column->defaultSortingDirectionIsAscending()
+		);
+	}
+
+	/**
+     * @param string $propertyName
+     * @param boolean $isAscending
+     * @return void
+     */
+	public function setDefaultFromCookie($propertyName, $isAscending)
+	{
+		$this->newDefaults($propertyName, $isAscending);
 	}
 
 	/**
@@ -65,6 +76,19 @@ class SortRepository
 		$this->sortAscending = Request::input('asc', $this->defaultSort['isAscending']);
 
 		return $dataCollection->orderBy( $this->sortedBy, $this->sortAscending ? 'ASC' : 'DESC');
+	}
+
+	/**
+     * @param string $propertyName
+     * @param boolean $isAscending
+     * @return void
+     */
+	private function newDefaults($propertyName, $isAscending)
+	{
+		$this->defaultSort = [
+			'property' 	  => $propertyName,
+			'isAscending' => $isAscending
+		];
 	}
 
 	/**
