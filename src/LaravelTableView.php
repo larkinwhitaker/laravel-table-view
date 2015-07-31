@@ -71,7 +71,15 @@ class LaravelTableView
 		$this->sortRepo = new SortRepository;
 
 		// pagination
-		$this->perPage = Request::input('limit', 10);
+		$this->perPage = 10;
+		if ( Request::has('limit', 10) )
+		{
+			$this->perPage = Request::input('limit');
+		}
+		else if ( Cookie::has($this->routeName . '_perPage') )
+		{
+			$this->perPage = Cookie::get($this->routeName . '_perPage');
+		}
 
 		// search
 		$this->searchRepo = new SearchRepository;

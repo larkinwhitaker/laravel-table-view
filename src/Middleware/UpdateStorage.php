@@ -36,6 +36,12 @@ class UpdateStorage
 				->withCookie( cookie()->forever( $currentRouteName . '.sortAscending', $request->input('asc') ) );
 		}
 
+		if ( $request->has('limit') )
+		{
+			$response = $response
+				->withCookie( cookie()->forever( $currentRouteName . '.perPage', $request->input('limit') ) );
+		}
+
 		return $response;
     }
 

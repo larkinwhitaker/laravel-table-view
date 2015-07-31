@@ -46,12 +46,13 @@ class TableViewCookieStorage
     {
 		$storedSearchQuery = LookInStorage::forSearch($request, $currentRouteName);
     	$storedPageNumber = LookInStorage::forPage($request, $currentRouteName);
+    	$storedPerPage = LookInStorage::forLimit($request, $currentRouteName);
 
-		$shouldRedirect = ( (bool) $storedSearchQuery || (bool) $storedPageNumber );
+		$shouldRedirect = ( (bool) $storedSearchQuery || (bool) $storedPageNumber || (bool) $storedPerPage );
 
 		if ( $shouldRedirect )
 		{
-			$redirectParameters = LookInStorage::forRedirectParameters($request, $storedSearchQuery, $storedPageNumber);
+			$redirectParameters = LookInStorage::forRedirectParameters($request, $storedSearchQuery, $storedPageNumber,  $storedPerPage);
 			$this->redirectRoute = route( $currentRouteName, $redirectParameters );
 		}
 

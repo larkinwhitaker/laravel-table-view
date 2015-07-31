@@ -10,7 +10,7 @@ class LookInStorage
      * @param mixed $storedPageNumber
      * @return array
      */
-    public static function forRedirectParameters($request, $storedSearchQuery, $storedPageNumber)
+    public static function forRedirectParameters($request, $storedSearchQuery, $storedPageNumber, $storedPerPage)
     {
 		$redirectParameters = $request->all();
 
@@ -22,6 +22,11 @@ class LookInStorage
 		if ( $storedPageNumber ) 
 		{
 			$redirectParameters['page'] = $storedPageNumber;
+		}
+
+		if ( $storedPerPage ) 
+		{
+			$redirectParameters['limit'] = $storedPerPage;
 		}
 
 		return $redirectParameters;
@@ -56,6 +61,22 @@ class LookInStorage
 			&& $request->cookie($currentRouteName . '_currentPage') )
 		{
 			return $request->cookie($currentRouteName . '_currentPage');
+		}
+
+		return false;
+    }
+
+	/**
+     * @param \Illuminate\Http\Request $request
+     * @param string $currentRouteName
+     * @return mixed
+     */
+    public static function forLimit($request, $currentRouteName)
+    {
+		if ( ! $request->has('limit')
+			&& $request->cookie($currentRouteName . '_perPage') )
+		{
+			return $request->cookie($currentRouteName . '_perPage');
 		}
 
 		return false;
