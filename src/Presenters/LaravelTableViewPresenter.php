@@ -134,7 +134,7 @@ class LaravelTableViewPresenter
      */
 	private function titleWithTableFilters( $modelName, $dataCollectionSize )
 	{
-		$title = $dataCollectionSize > 0 ? $dataCollectionSize : 'No';
+		$title = $dataCollectionSize > 0 ? number_format($dataCollectionSize) : 'No';
 
 		if ( ! Request::has('q') )
 		{

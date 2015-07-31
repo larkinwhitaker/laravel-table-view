@@ -2,8 +2,6 @@
 
 namespace Witty\LaravelTableView;
 
-use Witty\LaravelTableView\Pagination\LaravelTableViewPaginator;
-
 use Witty\LaravelTableView\Repositories\SearchRepository;
 use Witty\LaravelTableView\Repositories\SortRepository;
 
@@ -46,6 +44,11 @@ class LaravelTableView
 	private $searchRepo;
 
 	/**
+	 * @var int
+	 */
+	private $perPage;
+
+	/**
      * @var string
      */
 	private $routeName;
@@ -66,7 +69,8 @@ class LaravelTableView
 		// sorting
 		$this->sortRepo = new SortRepository;
 
-		$this->paginator = new LaravelTableViewPaginator;
+		// pagination
+		$this->perPage = Request::input('limit', 10);
 
 		// search
 		$this->searchRepo = new SearchRepository;
@@ -233,15 +237,9 @@ class LaravelTableView
 			$this->searchRepo, 
 			$this->sortRepo, 
 			$this->columns 
-		);
+		)->paginate( $this->perPage );
 
-		$this->collectionSize = $this->dataCollection->count();
-
-		$this->dataCollection = $this->paginator->paginateCollection( 
-			$this->dataCollection, 
-			$this->collectionSize, 
-			$this->routeName 
-		);
+		$this->collectionSize = $this->dataCollection->total();
 
 		return $this;
 	}
