@@ -291,7 +291,7 @@ class LaravelTableView
 	{
 		$perPage = 10;
 
-		if ( Request::has('limit', 10) )
+		if ( Request::has('limit') )
 		{
 			$perPage = Request::input('limit');
 		}
