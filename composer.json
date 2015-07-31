@@ -1,0 +1,24 @@
+{
+    "name": "witty/laravel-table-view",
+    "description": "Laravel 5 Package for easily displaying table views for Eloquent Collections with search and sort functionality built in.",
+    "keywords": ["search", "sort", "pagination", "data table", "table view", "laravel", "laravel 5"],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Witty\\LaravelTableView\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "5.0.* | 5.1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "phpspec/phpspec": "~2.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Witty\\LaravelTableView\\Tests\\": "tests/"
+        }
+    }
+}
