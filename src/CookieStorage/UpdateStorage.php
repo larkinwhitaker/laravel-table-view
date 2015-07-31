@@ -1,6 +1,6 @@
 <?php
 
-namespace Witty\LaravelTableView\Middleware;
+namespace Witty\LaravelTableView\CookieStorage;
 
 class UpdateStorage
 {

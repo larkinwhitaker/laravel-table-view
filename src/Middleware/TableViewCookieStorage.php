@@ -3,8 +3,8 @@
 namespace Witty\LaravelTableView\Middleware;
 
 use Closure;
-use Witty\LaravelTableView\Middleware\LookInStorage;
-use Witty\LaravelTableView\Middleware\UpdateStorage;
+use Witty\LaravelTableView\CookieStorage\LookInStorage;
+use Witty\LaravelTableView\CookieStorage\UpdateStorage;
 
 
 class TableViewCookieStorage

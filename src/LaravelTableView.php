@@ -71,15 +71,7 @@ class LaravelTableView
 		$this->sortRepo = new SortRepository;
 
 		// pagination
-		$this->perPage = 10;
-		if ( Request::has('limit', 10) )
-		{
-			$this->perPage = Request::input('limit');
-		}
-		else if ( Cookie::has($this->routeName . '_perPage') )
-		{
-			$this->perPage = Cookie::get($this->routeName . '_perPage');
-		}
+		$this->perPage = $this->limitPerPage( $this->routeName );
 
 		// search
 		$this->searchRepo = new SearchRepository;
@@ -289,6 +281,26 @@ class LaravelTableView
 		$dataCollection = $sortRepo->addOrder($dataCollection, $tableViewColumns);
 
 		return $dataCollection;
+	}
+
+	/**
+     * @param string $routeName
+     * @return int
+     */
+	private function limitPerPage( $routeName )
+	{
+		$perPage = 10;
+
+		if ( Request::has('limit', 10) )
+		{
+			$perPage = Request::input('limit');
+		}
+		else if ( Cookie::has($routeName . '_perPage') )
+		{
+			$perPage = Cookie::get($routeName . '_perPage');
+		}
+
+		return $perPage;
 	}
 
 }
