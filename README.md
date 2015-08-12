@@ -202,9 +202,9 @@ Also include the tablview scripts
 ```
 
 # Middleware Cookie Storage
-Selected options for the tableview are easily added to cookie storage with built in Middleware.  
+Selected options for the tableview are easily added to cookie storage with built-in Middleware.  
 
-Sort options and limits per page are added to permanent storage.  Any user returning to the page will see these options filled with the same values that he/she selected in his/her most recent session.  
+Sort options and limits per page are each added to permanent storage.  At any point, a user returning to the tableview will see these options filled with the same values that he/she selected in his/her most recent session.  
 
 The search query and page number are temporarily stored during the user's current session.  With this, a user could visit something http://tableview.com/blog-articles with the tableview listing articles.  When a user views a specific article like http://tableview.com/blog-articles/laravel-blog/article, any link back to http://tableview.com/blog-articles will show the tableview with its most recent page number and search query.
 
