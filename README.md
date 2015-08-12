@@ -79,7 +79,7 @@ Adding Columns to the tableview
 		// OR
 		->column(function ($user) 
 		{
-			return '<img src="http://elkdevelopment.com/images/team/larkin_pic.jpg" height="60" width="60">';
+			return '<img src="' . $user->image_path . '" height="60" width="60">';
 		})
 		->column('Email', 'email:sort,search')
 		->column(function ($user) 
@@ -103,7 +103,7 @@ Custom column values
 		// OR if sorting and searching is unnecessary, simply pass in the Closure instead of the array
 		->column('Image', function ($user) 
 		{
-			return '<img src="http://elkdevelopment.com/images/team/larkin_pic.jpg" height="60" width="60">';
+			return '<img src="' . $user->image_path . '" height="60" width="60">';
 		});
 }]);
 
@@ -116,7 +116,7 @@ Columns without titles
 		// Just leave the column title out if you don't want to use it
 		->column(function ($user) 
 		{
-			return '<img src="http://elkdevelopment.com/images/team/larkin_pic.jpg" height="60" width="60">';
+			return '<img src="' . $user->image_path . '" height="60" width="60">';
 		});
 
 ```
@@ -143,18 +143,16 @@ Finally, build the TableView and pass it to the view
 ```
 
 All together with chaining
-** To give users the ability to sort while searching and customizing the 'per page' limit, YOU MUST GIVE the route a name.
-	Below the route is given the name 'home', for example
 ```php
 
-Route::get('/', ['as' => 'home', function(\Illuminate\Http\Request $request) 
+Route::get('/', function(\Illuminate\Http\Request $request) 
 {
 	$users = User::select('id', 'name', 'email', 'created_at');
 
 	$usersTableView = TableView::collection( $users, 'Administrator' )
 		->column(function ($user) 
 		{
-			return '<img src="http://elkdevelopment.com/images/team/larkin_pic.jpg" height="60" width="60">';
+			return '<img src="' . $user->image_path . '" height="60" width="60">';
 		})
 		->column('Name', 'name:sort,search')
 		->column('Email', 'email:sort,search')
@@ -172,7 +170,7 @@ Route::get('/', ['as' => 'home', function(\Illuminate\Http\Request $request)
 	return view('test', [
 		'usersTableView' => $usersTableView
 	]);
-}]);
+});
 
 ```
 # Front End
@@ -203,6 +201,39 @@ Also include the tablview scripts
 
 ```
 
+# Middleware Cookie Storage
+Selected options for the tableview are easily added to cookie storage with built in Middleware.  
+
+Sort options and limits per page are added to permanent storage.  Any user returning to the page will see these options filled with the same values that he/she selected in his/her most recent session.  
+
+The search query and page number are temporarily stored during the user's current session.  With this, a user could visit something http://tableview.com/blog-articles with the tableview listing articles.  When a user views a specific article like http://tableview.com/blog-articles/laravel-blog/article, any link back to http://tableview.com/blog-articles will show the tableview with its most recent page number and search query.
+
+All you have to do:
+
+Edit app/Http/Kernel.php, adding a reference to the Middleware
+```php
+
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+
+        // Laravel TableView Middleware
+        'table-view.storage' => \Witty\LaravelTableView\Middleware\TableViewCookieStorage::class,
+    ];
+```
+
+Then add it to the route containing the tableview
+```php
+
+    Route::get('/', ['middleware' => 'table-view.storage', function () {
+
+```
 
 # That's it!
 It's particular but in just a few lines you have a dynamic table view with powerful functionality.  Feel free to customize the tableview and element partial views.  Additional themes and styles coming soon.

@@ -3,6 +3,7 @@
 namespace Witty\LaravelTableView\Presenters;
 
 use Witty\LaravelTableView\LaravelTableView;
+use Witty\LaravelTableView\Presenters\RoutePresenter;
 
 use Request;
 
@@ -11,27 +12,23 @@ class SortArrowsPresenter
 	/**
      * Returns current uri with params for sorting by the specified property
      *
-     * @param string $currentRouteName
+     * @param string $currentPath
      * @param string $currentSortFieldName
      * @param boolean $currentSortIsAscending
      * @param string $columnName
      * @return string
      */
-	public static function anchorTagLink($currentRouteName, $currentSortFieldName, $currentSortIsAscending, $columnName)
+	public static function anchorTagLink($currentPath, $currentSortFieldName, $currentSortIsAscending, $columnName)
 	{
 		$linkSortsAscending = $currentSortFieldName === $columnName ? ! $currentSortIsAscending : false;
 
-		$routeParameters = [
-			'sortedBy' => $columnName,
-			'asc' 	   => $linkSortsAscending
-		];
-
-		$routeParameters = array_merge( 
-			$routeParameters, 
-			Request::except('page', 'sortedBy', 'asc') 
+		$routeParameters = array_merge([
+				'sortedBy' => $columnName,
+				'asc' 	   => $linkSortsAscending
+			], Request::except('sortedBy', 'asc') 
 		);
 
-		return route( $currentRouteName, $routeParameters );
+		return RoutePresenter::withParam($currentPath, $routeParameters);
 	}
 
 	/**

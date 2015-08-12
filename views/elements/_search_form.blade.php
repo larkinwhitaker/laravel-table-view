@@ -1,7 +1,7 @@
 
 @if ( $tableView->searchEnabled() !== false )
 
-	<form name="searchForm" class="pull-right" method="GET" action="{{ route($tableView->routeName(), Request::except('page', 'q')) }}">
+	<form name="searchForm" class="pull-right" method="GET" action="{{ '/' . $tableView->currentPath() }}">
 		<input type="hidden" name="sortedBy" value="{{ $tableView->sortedBy() }}">
 		<input type="hidden" name="asc" value="{{ $tableView->sortAscending() }}">
 		<input type="hidden" name="limit" value="{{ Request::input('limit', 10) }}">

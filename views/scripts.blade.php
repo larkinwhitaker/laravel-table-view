@@ -12,17 +12,21 @@
 		$('#submit-search-btn').prop('disabled', ! showButton);
 	}
 
-	toggleSearchButtons( searchQuery );
-
 	$(document).ready(function() 
 	{
-		$('#per-page-dropdown').on('change', function() {
+		toggleSearchButtons( searchQuery );
+		
+		$('#per-page-dropdown').on('change', function() 
+		{
 			window.location.href = this.value;
 		});
-		$('#search-form-input').on('input', function() {
+
+		$('#search-form-input').on('input', function() 
+		{
 			toggleSearchButtons( $(this).val() );
 		});
-		$('#cancel-search-btn').on('click', function() {
+		$('#cancel-search-btn').on('click', function() 
+		{
 			$('#search-form-input').val('');
 			toggleSearchButtons( false );
 			if ( searchQuery != '' ) searchForm.submit();

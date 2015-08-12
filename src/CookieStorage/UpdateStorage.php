@@ -7,15 +7,15 @@ class UpdateStorage
 	/**
      * @param \Illuminate\Http\Response $response
      * @param \Illuminate\Http\Request $request
-     * @param string $currentRouteName
+     * @param string $currentPath
      * @return \Illuminate\Http\Response
      */
-    public static function forResponse($response, $request, $currentRouteName)
+    public static function forResponse($response, $request, $currentPath)
     {
-    	$tableViewSearchCookie = self::findValueOrForget($request, $currentRouteName . '.searchQuery', 'q');
+    	$tableViewSearchCookie = self::findValueOrForget($request, $currentPath . '.searchQuery', 'q');
 		$response = $response->withCookie( $tableViewSearchCookie );
 
-    	$tableViewPageCookie = self::findValueOrForget($request, $currentRouteName . '.currentPage', 'page');
+    	$tableViewPageCookie = self::findValueOrForget($request, $currentPath . '.currentPage', 'page');
 		$response = $response->withCookie( $tableViewPageCookie );
 
 		return $response;
@@ -24,22 +24,22 @@ class UpdateStorage
 	/**
      * @param \Illuminate\Http\Response $response
      * @param \Illuminate\Http\Request $request
-     * @param string $currentRouteName
+     * @param string $currentPath
      * @return \Illuminate\Http\Response
      */
-    public static function forever($response, $request, $currentRouteName)
+    public static function forever($response, $request, $currentPath)
     {
 		if ( $request->has('sortedBy') )
 		{
 			$response = $response
-				->withCookie( cookie()->forever( $currentRouteName . '.sortedBy', $request->input('sortedBy') ) )
-				->withCookie( cookie()->forever( $currentRouteName . '.sortAscending', $request->input('asc') ) );
+				->withCookie( cookie()->forever( $currentPath . '.sortedBy', $request->input('sortedBy') ) )
+				->withCookie( cookie()->forever( $currentPath . '.sortAscending', $request->input('asc') ) );
 		}
 
 		if ( $request->has('limit') )
 		{
 			$response = $response
-				->withCookie( cookie()->forever( $currentRouteName . '.perPage', $request->input('limit') ) );
+				->withCookie( cookie()->forever( $currentPath . '.perPage', $request->input('limit') ) );
 		}
 
 		return $response;

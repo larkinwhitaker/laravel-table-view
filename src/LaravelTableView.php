@@ -52,7 +52,7 @@ class LaravelTableView
 	/**
      * @var string
      */
-	private $routeName;
+	private $path;
 
 	/**
      * @var string
@@ -65,13 +65,13 @@ class LaravelTableView
 	public function __construct()
 	{
 		// reference to current route
-		$this->routeName = Request::route()->getName();
+		$this->path = ltrim( Request::path(), '/');
 
 		// sorting
 		$this->sortRepo = new SortRepository;
 
 		// pagination
-		$this->perPage = $this->limitPerPage( $this->routeName );
+		$this->perPage = $this->limitPerPage( $this->path );
 
 		// search
 		$this->searchRepo = new SearchRepository;
@@ -221,9 +221,9 @@ class LaravelTableView
 	/**
      * @return string
      */
-	public function routeName()
+	public function currentPath()
 	{
-		return $this->routeName;
+		return $this->path;
 	}
 
 	/**
@@ -234,7 +234,7 @@ class LaravelTableView
 	public function build()
 	{
 		$this->dataCollection = $this->filteredAndSorted(
-			$this->routeName,
+			$this->path,
 			$this->dataCollection, 
 			$this->searchRepo, 
 			$this->sortRepo, 
@@ -259,22 +259,22 @@ class LaravelTableView
 	/**
      * Filter collection by search query and order collection
      *
-     * @param string $routeName
+     * @param string $path
      * @param Illuminate\Database\Eloquent\Collection $dataCollection
      * @param Witty\LaravelTableView\Repositories\SearchRepository $searchRepo
      * @return Witty\LaravelTableView\Repositories\SortRepository $sortRepo
      * @return array $tableViewColumns
      * @return Illuminate\Database\Eloquent\Collection
      */
-	private function filteredAndSorted( $routeName, $dataCollection, $searchRepo, $sortRepo, $tableViewColumns )
+	private function filteredAndSorted( $path, $dataCollection, $searchRepo, $sortRepo, $tableViewColumns )
 	{
 		$dataCollection = $searchRepo->addSearch($dataCollection);
 
-		if ( Cookie::has($routeName . '_sortedBy') )
+		if ( Cookie::has($path . '_sortedBy') )
 		{
 			$sortRepo->setDefaultFromCookie( 
-				Cookie::get($routeName . '_sortedBy'),
-				Cookie::get($routeName . '_sortAscending') 
+				Cookie::get($path . '_sortedBy'),
+				Cookie::get($path . '_sortAscending') 
 			);
 		}
 
@@ -284,10 +284,10 @@ class LaravelTableView
 	}
 
 	/**
-     * @param string $routeName
+     * @param string $path
      * @return int
      */
-	private function limitPerPage( $routeName )
+	private function limitPerPage( $path )
 	{
 		$perPage = 10;
 
@@ -295,9 +295,9 @@ class LaravelTableView
 		{
 			$perPage = Request::input('limit');
 		}
-		else if ( Cookie::has($routeName . '_perPage') )
+		else if ( Cookie::has($path . '_perPage') )
 		{
-			$perPage = Cookie::get($routeName . '_perPage');
+			$perPage = Cookie::get($path . '_perPage');
 		}
 
 		return $perPage;

@@ -189,8 +189,6 @@ class LaravelTableViewColumn
 					$this->sortable = true; $this->sortDefault = true; $this->defaultSortIsAscending = false; break;
 				case 'search': 
 					$this->searchable = true; break;
-				default: 
-					throw new \Exception('Invalid argument for column value.  Allowed values are sort and search.'); break;
 			}
 		}
 	}

@@ -4,6 +4,7 @@ namespace Witty\LaravelTableView\Presenters;
 
 use Witty\LaravelTableView\LaravelTableView;
 
+use Witty\LaravelTableView\Presenters\TableViewTitlePresenter;
 use Witty\LaravelTableView\Presenters\PerPageDropdownPresenter;
 use Witty\LaravelTableView\Presenters\SortArrowsPresenter;
 
@@ -34,9 +35,7 @@ class LaravelTableViewPresenter
 	{
 		$dataCollectionSize = $this->laravelTableView->dataSize();
 
-		$modelName = $this->modelNameForTitle( $this->laravelTableView, $dataCollectionSize );
-
-		return $this->titleWithTableFilters( $modelName, $dataCollectionSize );
+		return TableViewTitlePresenter::formattedTitle( $this->laravelTableView, $dataCollectionSize );
 	}
 
 	/**
@@ -59,7 +58,9 @@ class LaravelTableViewPresenter
      */
 	public function perPageOptions()
 	{
-		return PerPageDropdownPresenter::$pageLimitOptions;
+		return PerPageDropdownPresenter::pageLimitOptions( 
+			$this->laravelTableView->dataSize() 
+		);
 	}
 
 	/**
@@ -72,7 +73,7 @@ class LaravelTableViewPresenter
 	public function perPageOptionTagFor( $optionTagLimit )
 	{
 		return PerPageDropdownPresenter::optionTag(
-			$this->laravelTableView->routeName(), 
+			$this->laravelTableView->currentPath(),
 			$optionTagLimit
 		);
 	}
@@ -87,7 +88,7 @@ class LaravelTableViewPresenter
 	public function sortArrowAnchorTagLinkForColumnWithName($columnName)
 	{
 		return SortArrowsPresenter::anchorTagLink(
-			$this->laravelTableView->routeName(), 
+			$this->laravelTableView->currentPath(),
 			$this->laravelTableView->sortedBy(), 
 			$this->laravelTableView->sortAscending(), 
 			$columnName
@@ -108,39 +109,5 @@ class LaravelTableViewPresenter
 			$this->laravelTableView->sortAscending(), 
 			$columnName
 		);
-	}
-
-	/**
-     * @param Witty\LaravelTableView\LaravelTableView $laravelTableView
-     * @param int $dataCollectionSize
-     * @return string
-     */
-	private function modelNameForTitle( $laravelTableView, $dataCollectionSize )
-	{
-		$modelName = $laravelTableView->name();
-
-		if ( $dataCollectionSize !== 1 )
-		{
-			$modelName = str_plural( $modelName );
-		}
-
-		return $modelName;
-	}
-
-	/**
-     * @param string $modelName
-     * @param int $dataCollectionSize
-     * @return string
-     */
-	private function titleWithTableFilters( $modelName, $dataCollectionSize )
-	{
-		$title = $dataCollectionSize > 0 ? number_format($dataCollectionSize) : 'No';
-
-		if ( ! Request::has('q') )
-		{
-			return $title . ' Total ' . $modelName;
-		}
-
-		return $title . ' ' . $modelName . ' found by searching ' . Request::get('q');
 	}
 }
