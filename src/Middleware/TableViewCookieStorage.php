@@ -48,20 +48,7 @@ class TableViewCookieStorage
 		$storedSearchQuery = LookInStorage::forSearch($request, $currentPath);
     	$storedPageNumber = LookInStorage::forPage($request, $currentPath);
     	$storedPerPage = LookInStorage::forLimit($request, $currentPath);
-
     	
-    	\Log::info([
-    		'storage' => [
-	    		'search' => $storedSearchQuery,
-	    		'page' => $storedPageNumber,
-	    		'per page' => $storedPerPage
-			],
-				'request' => [
-	    		'search' => $request->has('q'),
-	    		'page' => $request->has('page'),
-	    		'per page' => $request->has('limit')
-    		]
-		]);
 		$shouldRedirect = ( (bool) $storedSearchQuery || (bool) $storedPageNumber || (bool) $storedPerPage );
 
 		if ( $shouldRedirect )
