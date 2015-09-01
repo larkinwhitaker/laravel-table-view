@@ -35,6 +35,11 @@ class LaravelTableViewColumn
 	private $searchable;
 
 	/**
+	 * @var boolean
+     */
+	private $defaultSortIsAscending;
+	
+	/**
      * Build the column
      *
      * @param mixed $title
