@@ -172,7 +172,7 @@ class LaravelTableViewColumn
 	private function parseValueStringForOptions($value)
 	{
 		$optionsStart = strpos($value, ':');
-		$this->propertyName = substr($value, 0, $optionsStart);
+		$this->propertyName = $optionsStart !== false ? substr($value, 0, $optionsStart) : $value;
 
 		$options = explode(",", substr($value, $optionsStart+1));
 
