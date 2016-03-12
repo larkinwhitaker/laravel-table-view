@@ -65,17 +65,23 @@ class SearchRepository
      */
 	public function addSearch($dataCollection)
 	{
-		if ( ! $this->searchQuery ) return $dataCollection;
-
-		$i = 0;
-		foreach ($this->searchFields as $searchableProperty)
-		{
-			$whereClause = ($i === 0) ? 'where' : 'orWhere';
-
-			$dataCollection = $dataCollection->{$whereClause}($searchableProperty, 'LIKE', "%{$this->searchQuery}%");
-			$i++;
+		if ( ! $this->searchQuery ) {
+			return $dataCollection;
 		}
 
-		return $dataCollection;
+		$searchableFields = $this->searchFields;
+		return $dataCollection->where(function($data) use ($searchableFields)
+		{
+			$i = 0;
+			foreach ($searchableFields as $searchableProperty)
+			{
+				$whereClause = ($i === 0) ? 'where' : 'orWhere';
+
+				$data->{$whereClause}(
+					$searchableProperty, 'LIKE', "%{$this->searchQuery}%"
+				);
+				$i++;
+			}
+		});
 	}
 }
