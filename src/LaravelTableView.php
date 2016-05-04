@@ -155,9 +155,9 @@ class LaravelTableView
      * @param string $collectionAlias
      * @return Witty\LaravelTableView\LaravelTableView
      */
-	public function headerControl($viewPath)
+	public function headerControl($viewPath, $viewParams = [])
 	{
-		$this->headerControlView = $viewPath;
+		$this->headerControlView = view($viewPath, $viewParams)->render();
 
 		return $this;
 	}
@@ -184,6 +184,14 @@ class LaravelTableView
 	public function columns()
 	{
 		return $this->columns;
+	}
+
+	/**
+     * @return array
+     */
+	public function hasHeaderView()
+	{
+		return $this->headerControlView !== null;
 	}
 
 	/**
