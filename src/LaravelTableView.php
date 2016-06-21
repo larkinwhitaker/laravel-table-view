@@ -86,7 +86,7 @@ class LaravelTableView
      */
 	public static function collection($dataCollection, $tableName = '')
 	{
-		$dataTable = new self;
+		$dataTable = new static;
 
 		if ( is_string($dataCollection) )
 		{
