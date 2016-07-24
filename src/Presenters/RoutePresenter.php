@@ -13,8 +13,8 @@ class RoutePresenter
      */
 	public static function withParam($currentPath, $routeParameters)
 	{
-		return "/" 
+		return url("/"
 			. $currentPath .'?'
-            . http_build_query($routeParameters, null, '&');
+            . http_build_query($routeParameters, null, '&'));
 	}
 }
