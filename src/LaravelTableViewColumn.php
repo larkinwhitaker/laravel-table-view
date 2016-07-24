@@ -88,7 +88,7 @@ class LaravelTableViewColumn
 	{
 		if ( ! isset($this->customValue) )
 		{
-			return $model->{$this->propertyName};
+			return e($model->{$this->propertyName});
 		}
 		else
 		{
@@ -180,14 +180,14 @@ class LaravelTableViewColumn
 		{
 			switch ($option)
 			{
-				case 'sort': 
+				case 'sort':
 					$this->sortable = true; break;
 				case 'sort*':
-				case 'sort*:asc': 
+				case 'sort*:asc':
 					$this->sortable = true; $this->sortDefault = true; $this->defaultSortIsAscending = true; break;
-				case 'sort*:desc': 
+				case 'sort*:desc':
 					$this->sortable = true; $this->sortDefault = true; $this->defaultSortIsAscending = false; break;
-				case 'search': 
+				case 'search':
 					$this->searchable = true; break;
 			}
 		}
