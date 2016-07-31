@@ -1,0 +1,4 @@
+suites:
+  library_suite:
+    namespace: Witty\LaravelTableView
+    psr4_prefix: Witty\LaravelTableView
