@@ -7,18 +7,18 @@
                 	{{ $tableView->present()->title() }}
                 </h4>
             </div>
-            
+
             <div class="panel-body">
 
             	<div class="m-b-10 clearfix">
-            		
+
                 	@include('table-view::elements._per_page_dropdown')
-			    
+
 				    @include('table-view::elements._search_form')
 
 				    @if ( $tableView->hasHeaderView() )
 				    	<div class="pull-right">
-				    		{{ $tableView->headerView() }}
+				    		{!! $tableView->headerView() !!}
 				    	</div>
 				    @endif
             	</div>
@@ -32,7 +32,7 @@
         </div>
 
 		<div class="pull-right">
-			<?php echo $tableView->data()->appends( Request::except('page') )->render(); ?>
+			{!! $tableView->data()->appends( Request::except('page') )->render() !!}
 		</div>
 
     </div>
