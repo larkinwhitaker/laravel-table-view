@@ -36,7 +36,7 @@ class SearchRepository
 		}
 		else if ( is_array($searchField) )
 		{
-			$this->searchFields = array_merge($this->searchFields, $searchFields);
+			$this->searchFields = array_merge($this->searchFields, $searchField);
 		}
 	}
 
