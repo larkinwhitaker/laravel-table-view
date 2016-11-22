@@ -12,6 +12,11 @@ class SearchRepository
 	private $searchQuery;
 
 	/**
+	 * @var string
+	 */
+	private $searchValues;
+
+	/**
 	 * @var array
 	 */
 	private $searchFields = [];
@@ -22,6 +27,8 @@ class SearchRepository
 	public function __construct()
 	{
 		$this->searchQuery = Request::input('q', '');
+		$this->searchValues = explode(' ', $this->searchQuery);
+		$this->searchValues[] = $this->searchQuery;
 	}
 
 	/**
@@ -36,7 +43,9 @@ class SearchRepository
 		}
 		else if ( is_array($searchField) )
 		{
-			$this->searchFields = array_merge($this->searchFields, $searchFields);
+			$this->searchFields = array_merge(
+				$this->searchFields, $searchField
+			);
 		}
 	}
 
@@ -73,13 +82,20 @@ class SearchRepository
 		return $dataCollection->where(function($data) use ($searchableFields)
 		{
 			$i = 0;
-			foreach ($searchableFields as $searchableProperty)
-			{
+			foreach ($searchableFields as $searchableProperty) {
 				$whereClause = ($i === 0) ? 'where' : 'orWhere';
+
+				if (strpos($searchableProperty, '{') !== false) {
+					$searchableProperty = str_replace('{', '', $searchableProperty);
+					$searchableProperty = str_replace('}', '', $searchableProperty);
+
+					$searchableProperty = \DB::raw($searchableProperty);
+				}
 
 				$data->{$whereClause}(
 					$searchableProperty, 'LIKE', "%{$this->searchQuery}%"
 				);
+
 				$i++;
 			}
 		});

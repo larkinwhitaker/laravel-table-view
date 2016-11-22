@@ -79,7 +79,15 @@ class SortRepository
 			return $dataCollection;
 		}
 
-		return $dataCollection->orderBy( $this->sortedBy, $this->sortAscending ? 'ASC' : 'DESC');
+		$sortField = $this->sortedBy;
+		if (strpos($sortField, '{') !== false) {
+			$sortField = str_replace('{', '', $sortField);
+			$sortField = str_replace('}', '', $sortField);
+
+			$sortField = \DB::raw($sortField);
+		}
+
+		return $dataCollection->orderBy( $sortField, $this->sortAscending ? 'ASC' : 'DESC');
 	}
 
 	/**
