@@ -17,47 +17,47 @@ class LaravelTableView
 	/**
      * @var \Illuminate\Database\Eloquent\Collection
      */
-	private $dataCollection;
+	protected $dataCollection;
 
 	/**
      * @var int
      */
-	private $collectionSize;
+	protected $collectionSize;
 
 	/**
      * @var array
      */
-	private $columns;
+	protected $columns;
 
 	/**
      * @var string
      */
-	private $headerControlView;
+	protected $headerControlView;
 
 	/**
      * @var Witty\LaravelTableView\Repositories\SortRepository
      */
-	private $sortRepo;
+	protected $sortRepo;
 
 	/**
      * @var Witty\LaravelTableView\Repositories\SearchRepository
      */
-	private $searchRepo;
+	protected $searchRepo;
 
 	/**
 	 * @var int
 	 */
-	private $perPage;
+	protected $perPage;
 
 	/**
      * @var string
      */
-	private $path;
+	protected $path;
 
 	/**
      * @var string
      */
-	private $tableName;
+	protected $tableName;
 
 	/**
 	 * @return void
@@ -86,7 +86,7 @@ class LaravelTableView
      */
 	public static function collection($dataCollection, $tableName = '')
 	{
-		$dataTable = new self;
+		$dataTable = new static;
 
 		if ( is_string($dataCollection) )
 		{
@@ -155,9 +155,9 @@ class LaravelTableView
      * @param string $collectionAlias
      * @return Witty\LaravelTableView\LaravelTableView
      */
-	public function headerControl($viewPath)
+	public function headerControl($viewPath, $viewParams = [])
 	{
-		$this->headerControlView = $viewPath;
+		$this->headerControlView = view($viewPath, $viewParams)->render();
 
 		return $this;
 	}
@@ -184,6 +184,14 @@ class LaravelTableView
 	public function columns()
 	{
 		return $this->columns;
+	}
+
+	/**
+     * @return array
+     */
+	public function hasHeaderView()
+	{
+		return $this->headerControlView !== null;
 	}
 
 	/**

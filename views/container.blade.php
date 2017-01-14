@@ -16,9 +16,9 @@
 			    
 				    @include('table-view::elements._search_form')
 
-				    @if ( $tableView->headerView() )
+				    @if ( $tableView->hasHeaderView() )
 				    	<div class="pull-right">
-				    		@include( $tableView->headerView() )
+				    		{{ $tableView->headerView() }}
 				    	</div>
 				    @endif
             	</div>

@@ -75,7 +75,19 @@ class SortRepository
 		$this->sortedBy = Request::input('sortedBy', $this->defaultSort['property']);
 		$this->sortAscending = Request::input('asc', $this->defaultSort['isAscending']);
 
-		return $dataCollection->orderBy( $this->sortedBy, $this->sortAscending ? 'ASC' : 'DESC');
+		if ( ! $this->sortedBy) {
+			return $dataCollection;
+		}
+
+		$sortField = $this->sortedBy;
+		if (strpos($sortField, '{') !== false) {
+			$sortField = str_replace('{', '', $sortField);
+			$sortField = str_replace('}', '', $sortField);
+
+			$sortField = \DB::raw($sortField);
+		}
+
+		return $dataCollection->orderBy( $sortField, $this->sortAscending ? 'ASC' : 'DESC');
 	}
 
 	/**
