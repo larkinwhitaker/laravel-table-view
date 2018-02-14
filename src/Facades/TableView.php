@@ -12,8 +12,8 @@ class TableView extends Facade
     * @return string
     */
     protected static function getFacadeAccessor() 
-    { 
-    	return 'laravelTableView'; 
+    {
+        return 'Witty\LaravelTableView\laravelTableView';
     }
 
 }
